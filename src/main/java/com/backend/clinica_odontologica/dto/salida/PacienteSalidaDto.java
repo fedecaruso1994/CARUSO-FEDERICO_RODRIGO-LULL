@@ -1,34 +1,28 @@
-package com.backend.clinica_odontologica.entity;
+package com.backend.clinica_odontologica.dto.salida;
 
 import java.time.LocalDate;
 
-public class Paciente {
+public class PacienteSalidaDto {
     private Long id;
+
     private String nombre;
+
     private String apellido;
+
     private int dni;
     private LocalDate fechaIngreso;
-    private Domicilio domicilio;
+    private DomicilioSalidaDto domicilioSalidaDto;
 
-    public Paciente(){
-
+    public PacienteSalidaDto() {
     }
 
-    public Paciente(Long id, String nombre, String apellido, int dni, LocalDate fechaIngreso, Domicilio domicilio) {
+    public PacienteSalidaDto(Long id, String nombre, String apellido, int dni, LocalDate fechaIngreso, DomicilioSalidaDto domicilioSalidaDto) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.fechaIngreso = fechaIngreso;
-        this.domicilio = domicilio;
-    }
-
-    public Paciente(String nombre, String apellido, int dni, LocalDate fechaIngreso, Domicilio domicilio) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.fechaIngreso = fechaIngreso;
-        this.domicilio = domicilio;
+        this.domicilioSalidaDto = domicilioSalidaDto;
     }
 
     public Long getId() {
@@ -71,16 +65,11 @@ public class Paciente {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public Domicilio getDomicilio() {
-        return domicilio;
+    public DomicilioSalidaDto getDomicilioSalidaDto() {
+        return domicilioSalidaDto;
     }
 
-    public void setDomicilio(Domicilio domicilio) {
-        this.domicilio = domicilio;
-    }
-
-    @Override
-    public String toString() {
-        return "Id: " + id + " - Nombre: " + nombre + " - Apellido: " + apellido + " - DNI: " + dni + " - Fechas de ingreso: " + fechaIngreso + " - Domicilio: " + domicilio;
+    public void setDomicilioSalidaDto(DomicilioSalidaDto domicilioSalidaDto) {
+        this.domicilioSalidaDto = domicilioSalidaDto;
     }
 }

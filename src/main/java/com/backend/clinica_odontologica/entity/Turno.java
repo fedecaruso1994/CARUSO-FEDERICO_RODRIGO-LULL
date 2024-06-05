@@ -1,22 +1,26 @@
 package com.backend.clinica_odontologica.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Turno {
 
     private Long id;
+    private LocalDateTime fechaYHora;
     private Paciente paciente;
     private Odontologo odontologo;
-    private LocalDate fecha;
 
-    public Turno() {
-    }
 
-    public Turno(Long id, Paciente paciente, Odontologo odontologo, LocalDate fecha) {
-        this.id = id;
+    public Turno(LocalDateTime fechaYHora, Paciente paciente, Odontologo odontologo) {
+        this.fechaYHora = fechaYHora;
         this.paciente = paciente;
         this.odontologo = odontologo;
-        this.fecha = fecha;
+    }
+
+    public Turno(Long id, LocalDateTime fechaYHora, Paciente paciente, Odontologo odontologo) {
+        this.id = id;
+        this.fechaYHora = fechaYHora;
+        this.paciente = paciente;
+        this.odontologo = odontologo;
     }
 
     public Long getId() {
@@ -27,27 +31,20 @@ public class Turno {
         this.id = id;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
-    }
+    public LocalDateTime getFechaYHora() { return fechaYHora; }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
+    public void setFechaYHora(LocalDateTime fechaYHora) { this.fechaYHora = fechaYHora; }
 
-    public Odontologo getOdontologo() {
-        return odontologo;
-    }
+    public Paciente getPaciente() { return paciente; }
 
-    public void setOdontologo(Odontologo odontologo) {
-        this.odontologo = odontologo;
-    }
+    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
+    public Odontologo getOdontologo() { return odontologo; }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setOdontologo(Odontologo odontologo) { this.odontologo = odontologo; }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + " - Fecha y hora " + fechaYHora + " - Paciente: " + paciente + " Odontólogo" + odontologo ;
     }
 }

@@ -1,16 +1,21 @@
 package com.backend.clinica_odontologica.repository.impl;
 
 import com.backend.clinica_odontologica.entity.Domicilio;
+import com.backend.clinica_odontologica.entity.Odontologo;
 import com.backend.clinica_odontologica.entity.Paciente;
 import com.backend.clinica_odontologica.repository.IDao;
 import com.backend.clinica_odontologica.repository.dbconnection.H2Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PacienteDaoH2 implements IDao<Paciente> {
     private final Logger LOGGER = LoggerFactory.getLogger(PacienteDaoH2.class);
 
@@ -79,7 +84,38 @@ public class PacienteDaoH2 implements IDao<Paciente> {
 
     @Override
     public Paciente buscarPorId(Long id) {
-        return null;
+        Paciente pacienteBuscado = null;
+        Connection connection = null;
+
+        try{
+            connection = H2Connection.getConnection();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM PACIENTES WHERE ID = ?");
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Domicilio domicilio = new DomicilioDaoH2().buscarPorId(resultSet.getLong("domicilio_id"));
+            while (resultSet.next()){
+
+                pacienteBuscado = new Paciente(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3), resultSet.getInt(4), resultSet.getDate(5).toLocalDate(), domicilio);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception ex) {
+                LOGGER.error("Ha ocurrido un error al intentar cerrar la bdd. " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+
+        if(pacienteBuscado == null) LOGGER.error("No se ha encontrado el paciente con id: " + id);
+        else LOGGER.info("Se ha encontrado el paciente: " + pacienteBuscado);
+        return null
+                ;
     }
 
     @Override
