@@ -1,13 +1,8 @@
 package com.backend.clinica_odontologica.service.impl;
-
-
-
 import com.backend.clinica_odontologica.dto.entrada.TurnoEntradaDto;
-import com.backend.clinica_odontologica.dto.salida.PacienteSalidaDto;
 import com.backend.clinica_odontologica.dto.salida.TurnoSalidaDto;
-import com.backend.clinica_odontologica.entity.Paciente;
 import com.backend.clinica_odontologica.entity.Turno;
-
+import com.backend.clinica_odontologica.exceptios.ResourceNotFoundException;
 import com.backend.clinica_odontologica.repository.TurnoRepository;
 import com.backend.clinica_odontologica.service.ITurnoService;
 import com.backend.clinica_odontologica.utils.JsonPrinter;
@@ -15,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -25,7 +19,7 @@ public class TurnoService implements ITurnoService {
     private final TurnoRepository turnoRepository;
     private final ModelMapper modelMapper;
 
-    public TurnoService(ModelMapper modelMapper, , TurnoRepository turnoRepository) {
+    public TurnoService(ModelMapper modelMapper, TurnoRepository turnoRepository) {
         this.modelMapper = modelMapper;
         this.turnoRepository = turnoRepository;
 
@@ -56,7 +50,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoSalidaDto buscarTurnoPorId(Long id) {
+    public TurnoSalidaDto buscarTurnoPorId(Long id) throws ResourceNotFoundException {
         Turno turnoBuscado = turnoRepository.findById(id).orElse(null);
         TurnoSalidaDto turnoEncontrado = null;
 
@@ -65,6 +59,7 @@ public class TurnoService implements ITurnoService {
             LOGGER.info("Turno encontrado: {}", JsonPrinter.toString(turnoEncontrado));
         } else {
             LOGGER.error("No se ha encontrado el turno con id {}", id);
+            throw new ResourceNotFoundException("No existe el registro con turno id: " + id);
         }
 
         return turnoEncontrado;
@@ -72,19 +67,22 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public void eliminarTurno(Long id) {
+    public void eliminarTurno(Long id) throws ResourceNotFoundException {
         if(buscarTurnoPorId(id) != null) {
             turnoRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado el turno con id {}", id);
+        } else {
+            LOGGER.warn("No se encontró el turno con ID: " + id);
+            throw new ResourceNotFoundException("No existe el registro con turno id: " + id);
         }
 
     }
 
     @Override
-    public TurnoSalidaDto actualizarTurno(TurnoEntradaDto turnoEntradaDto, Long id) {
+    public TurnoSalidaDto actualizarTurno(TurnoEntradaDto turnoEntradaDto, Long id) throws ResourceNotFoundException {
         Turno turnoRecibido = modelMapper.map(turnoEntradaDto, Turno.class);
         Turno turnoAActualizar = turnoRepository.findById(id).orElse(null);
-        TurnoSalidaDto turnoSalidaDto = null;
+        TurnoSalidaDto turnoSalidaDto;
 
         if(turnoAActualizar != null){
 
@@ -100,7 +98,7 @@ public class TurnoService implements ITurnoService {
 
         } else {
             LOGGER.error("No fue posible actualizar el turno porque no se encuentra en nuestra base de datos");
-            //lanzar excepcion
+            throw new ResourceNotFoundException("No existe el registro con turno id: " + id);
         }
         return turnoSalidaDto;
     }

@@ -1,10 +1,21 @@
 package com.backend.clinica_odontologica.entity;
 
-public class Odontologo {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "ODONTOLOGOS")
+public class Odontologo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 50 , nullable = false)
     private int matricula;
+
+    @Column(length = 50 , nullable = false)
     private String nombre;
+
+    @Column(length = 50 , nullable = false)
     private String apellido;
 
     public Odontologo() {

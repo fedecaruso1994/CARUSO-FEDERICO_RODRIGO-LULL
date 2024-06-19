@@ -1,7 +1,5 @@
 package com.backend.clinica_odontologica.entity;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 

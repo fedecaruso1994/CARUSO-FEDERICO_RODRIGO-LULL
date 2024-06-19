@@ -4,6 +4,7 @@ import com.backend.clinica_odontologica.dto.entrada.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.PacienteSalidaDto;
 import com.backend.clinica_odontologica.entity.Paciente;
 
+import com.backend.clinica_odontologica.exceptios.ResourceNotFoundException;
 import com.backend.clinica_odontologica.repository.PacienteRepository;
 import com.backend.clinica_odontologica.service.IPacienteService;
 import com.backend.clinica_odontologica.utils.JsonPrinter;
@@ -52,7 +53,7 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public PacienteSalidaDto buscarPacientePorId(Long id) {
+    public PacienteSalidaDto buscarPacientePorId(Long id)  throws ResourceNotFoundException {
 
         Paciente pacienteBuscado = pacienteRepository.findById(id).orElse(null);
         PacienteSalidaDto pacienteEncontrado = null;
@@ -60,25 +61,27 @@ public class PacienteService implements IPacienteService {
         if (pacienteBuscado != null){
             pacienteEncontrado = modelMapper.map(pacienteBuscado, PacienteSalidaDto.class);
             LOGGER.info("Paciente encontrado: {}", JsonPrinter.toString(pacienteEncontrado));
-        } else LOGGER.error("No se ha encontrado el paciente con id {}", id);
+        } else {
+            LOGGER.error("No se ha encontrado el paciente con id {}", id);
+            throw new ResourceNotFoundException("No existe registro de paciente con id " + id);
+        }
 
         return pacienteEncontrado;
     }
 
     @Override
-    public void eliminarPaciente(Long id) {
+    public void eliminarPaciente(Long id) throws ResourceNotFoundException {
         if(buscarPacientePorId(id) != null) {
             pacienteRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado el paciente con id {}", id);
-        }
-//        } // else {
-//            //throw new ResourceNotFoundException("No existe registro de paciente con id " + id);
-//        }
+        } else {
+            LOGGER.warn("No se encontró el paciente con ID: " + id);
+            throw new ResourceNotFoundException("No existe registro de paciente con id " + id);}
 
     }
 
     @Override
-    public PacienteSalidaDto actualizarPaciente(PacienteEntradaDto pacienteEntradaDto, Long id) {
+    public PacienteSalidaDto actualizarPaciente(PacienteEntradaDto pacienteEntradaDto, Long id) throws ResourceNotFoundException {
         Paciente pacienteRecibido = modelMapper.map(pacienteEntradaDto, Paciente.class);
         Paciente pacienteAActualizar = pacienteRepository.findById(id).orElse(null);
         PacienteSalidaDto pacienteSalidaDto = null;
@@ -96,7 +99,7 @@ public class PacienteService implements IPacienteService {
 
         } else {
             LOGGER.error("No fue posible actualizar el paciente porque no se encuentra en nuestra base de datos");
-            //lanzar excepcion
+            throw new ResourceNotFoundException("No existe registro de paciente con id " + id);
         }
 
         return pacienteSalidaDto;
