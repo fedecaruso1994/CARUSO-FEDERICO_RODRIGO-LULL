@@ -1,13 +1,31 @@
 package com.backend.clinica_odontologica.entity;
 
+import org.springframework.stereotype.Component;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "PACIENTES")
 public class Paciente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 50 , nullable = false)
     private String nombre;
+
+    @Column(length = 50, nullable = false)
     private String apellido;
+
+    @Column(length = 20 , nullable = false)
     private int dni;
+
+    @Column(length = 20 , nullable = false)
     private LocalDate fechaIngreso;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn( name = "domicilio_id")
     private Domicilio domicilio;
 
     public Paciente(){
@@ -23,13 +41,6 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    public Paciente(String nombre, String apellido, int dni, LocalDate fechaIngreso, Domicilio domicilio) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.fechaIngreso = fechaIngreso;
-        this.domicilio = domicilio;
-    }
 
     public Long getId() {
         return id;
@@ -79,8 +90,5 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    @Override
-    public String toString() {
-        return "Id: " + id + " - Nombre: " + nombre + " - Apellido: " + apellido + " - DNI: " + dni + " - Fechas de ingreso: " + fechaIngreso + " - Domicilio: " + domicilio;
-    }
+
 }

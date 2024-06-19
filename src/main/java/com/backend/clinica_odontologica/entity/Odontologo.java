@@ -17,11 +17,7 @@ public class Odontologo {
         this.apellido = apellido;
     }
 
-    public Odontologo(int matricula, String nombre, String apellido) {
-        this.matricula = matricula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
+
 
     public Long getId() { return id; }
 
@@ -39,8 +35,5 @@ public class Odontologo {
 
     public void setApellido(String apellido) { this.apellido = apellido; }
 
-    @Override
-    public String toString() {
-        return "\nID: " + id + " - Matricula: " + matricula + "- Nombre: " + nombre + " - Apellido: " + apellido;
-    }
+
 }

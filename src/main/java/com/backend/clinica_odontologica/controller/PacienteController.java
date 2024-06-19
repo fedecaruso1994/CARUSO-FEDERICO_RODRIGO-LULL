@@ -4,6 +4,8 @@ import com.backend.clinica_odontologica.dto.entrada.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.PacienteSalidaDto;
 
 import com.backend.clinica_odontologica.service.IPacienteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,14 +26,32 @@ public class PacienteController {
 
     //POST
     @PostMapping("/registrar")
-    public PacienteSalidaDto registrarPaciente(@RequestBody @Valid PacienteEntradaDto pacienteEntradaDto){
-        return pacienteService.registrarPaciente(pacienteEntradaDto);
+    public ResponseEntity<PacienteSalidaDto> registrarPaciente(@RequestBody @Valid PacienteEntradaDto pacienteEntradaDto){
+        return new ResponseEntity<>(pacienteService.registrarPaciente(pacienteEntradaDto), HttpStatus.CREATED);
     }
 
     //GET
     @GetMapping("/listar")
-    public List<PacienteSalidaDto> listarPacientes(){
-        return pacienteService.listarPacientes();
+    public ResponseEntity<List<PacienteSalidaDto>> listarPacientes(){
+        return new ResponseEntity<>(pacienteService.listarPacientes(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")//localhost:8080/pacientes/x
+    public ResponseEntity<PacienteSalidaDto> buscarPacientePorId(@PathVariable Long id){
+        return new ResponseEntity<>(pacienteService.buscarPacientePorId(id), HttpStatus.OK);
+    }
+
+    //PUT
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<PacienteSalidaDto> actualizarPaciente(@RequestBody @Valid PacienteEntradaDto pacienteEntradaDto, @PathVariable Long id){
+        return new ResponseEntity<>(pacienteService.actualizarPaciente(pacienteEntradaDto, id), HttpStatus.OK);
+    }
+
+    //DELETE
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarPaciente(@PathVariable Long id) {
+        pacienteService.eliminarPaciente(id);
+        return new ResponseEntity<>("Paciente eliminado correctamente", HttpStatus.NO_CONTENT);
     }
 
 
