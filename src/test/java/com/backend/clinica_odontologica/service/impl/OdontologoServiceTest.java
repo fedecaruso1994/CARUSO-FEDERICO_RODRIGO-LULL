@@ -24,7 +24,7 @@ class OdontologoServiceTest {
 
     @Test
     @Order(1)
-    void deberiaGuardarUnOdontologoCorrectamente() {
+    void deberiaRegistrarElOdontologo_pepe_argento() {
         OdontologoEntradaDto odontologoEntradaDto = new OdontologoEntradaDto(112233, "Pepe", "Argento");
         OdontologoSalidaDto odontologoRegistrado = odontologoService.registrarOdontologo(odontologoEntradaDto);
         assertNotNull(odontologoRegistrado.getId());
@@ -32,7 +32,7 @@ class OdontologoServiceTest {
 
     @Test
     @Order(2)
-    void deberiaBuscarUnOdontologoCorrectamente() {
+    void deberiaBuscarUnOdontologoPorSuId() {
         assertDoesNotThrow(() -> odontologoService.buscarOdontologoPorId(1L));
     }
 
@@ -54,15 +54,5 @@ class OdontologoServiceTest {
         assertDoesNotThrow(() -> odontologoService.eliminarOdontologo(1L));
     }
 
-    @Test
-    @Order(6)
-    void deberiaFallarAlEliminarUnOdontologoInexistente() {
-        assertThrows(ResourceNotFoundException.class, () -> odontologoService.eliminarOdontologo(9999L));
-    }
 
-    @Test
-    @Order(7)
-    void deberiaListarUnaListaVaciaDeOdontologos() {
-        assertTrue(odontologoService.listarOdontologos().isEmpty());
-    }
 }

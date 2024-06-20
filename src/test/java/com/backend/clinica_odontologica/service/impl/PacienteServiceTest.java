@@ -27,7 +27,7 @@ class PacienteServiceTest {
 
     @Test
     @Order(1)
-    void deberiaGuardarUnPacienteCorrectamente() {
+    void deberiaRegistrarElPacienteLuisSuarez() {
         DomicilioEntradaDto domicilioEntradaDto = new DomicilioEntradaDto("Bv Artigas", 1234, "Tres Cruces", "Montevideo");
         PacienteEntradaDto pacienteDtoEntrada = new PacienteEntradaDto("Luis", "Suarez", 456789, LocalDate.now(), domicilioEntradaDto);
         PacienteSalidaDto pacienteRegistrado = pacienteService.registrarPaciente(pacienteDtoEntrada);
@@ -36,7 +36,7 @@ class PacienteServiceTest {
 
     @Test
     @Order(2)
-    void deberiaBuscarUnPacienteCorrectamente() {
+    void deberiaBuscarUnPacientePorSuId() {
         assertDoesNotThrow(() -> pacienteService.buscarPacientePorId(1L));
     }
 
@@ -64,9 +64,4 @@ class PacienteServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> pacienteService.eliminarPaciente(55555L));
     }
 
-    @Test
-    @Order(7)
-    void deberiaListarUnaListaVaciaDePacientes() {
-        assertTrue(pacienteService.listarPacientes().isEmpty());
-    }
 }

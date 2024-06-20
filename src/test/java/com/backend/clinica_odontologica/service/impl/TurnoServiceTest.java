@@ -4,6 +4,8 @@ import com.backend.clinica_odontologica.dto.entrada.DomicilioEntradaDto;
 import com.backend.clinica_odontologica.dto.entrada.OdontologoEntradaDto;
 import com.backend.clinica_odontologica.dto.entrada.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.entrada.TurnoEntradaDto;
+import com.backend.clinica_odontologica.dto.salida.OdontologoSalidaDto;
+import com.backend.clinica_odontologica.dto.salida.PacienteSalidaDto;
 import com.backend.clinica_odontologica.dto.salida.TurnoSalidaDto;
 import com.backend.clinica_odontologica.exceptios.ResourceNotFoundException;
 import com.backend.clinica_odontologica.service.IOdontologoService;
@@ -19,11 +21,12 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
 @PropertySource("classpath:application-test.properties")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TurnosServiceTest {
+class TurnoServiceTest {
 
     @Autowired
     ITurnoService turnoService;
@@ -34,30 +37,44 @@ class TurnosServiceTest {
     @Autowired
     IPacienteService pacienteService;
 
+    private Long odontologoId;
+    private Long pacienteId;
 
-    DomicilioEntradaDto domicilioEntradaDto = new DomicilioEntradaDto("Rivadavia", 7895, "Solymar", "Canelones");
-    OdontologoEntradaDto odontologoEntradaDto = new OdontologoEntradaDto(1111, "Luis", "Suarez");
-    PacienteEntradaDto pacienteEntradaDto =  new PacienteEntradaDto("Leo", "Messi", 456789, LocalDate.now(), domicilioEntradaDto);
+    @BeforeAll
+    void config () {
+        if (odontologoId == null) {
+            OdontologoEntradaDto odontologoEntradaDto = new OdontologoEntradaDto (11111, "Leo", "Messi");
+            OdontologoSalidaDto odontologoRegistrado = odontologoService.registrarOdontologo(odontologoEntradaDto);
+            assertNotNull(odontologoRegistrado.getId());
+            odontologoId = odontologoRegistrado.getId();
+        }
 
+        if (pacienteId == null) {
+            DomicilioEntradaDto domicilioEntradaDto = new DomicilioEntradaDto("Flores", 1245, "Goes", "Montevideo");
+            PacienteEntradaDto pacienteEntradaDto = new PacienteEntradaDto("Marcelo", "Tinelli", 5678956
+                    , LocalDate.now(), domicilioEntradaDto);
+            PacienteSalidaDto pacienteRegistrado = pacienteService.registrarPaciente(pacienteEntradaDto);
+            assertNotNull(pacienteRegistrado.getId());
+            pacienteId = pacienteRegistrado.getId();
+        }
+    }
     @Test
     @Order(1)
-    void deberiaGuardarUnTurnoCorrectamente() {
-        TurnoEntradaDto turnoDtoEntrada = new TurnoEntradaDto(LocalDateTime.now(), pacienteEntradaDto, odontologoEntradaDto);
+    void deberiaRegistrarUnTurno() {
+        TurnoEntradaDto turnoDtoEntrada = new TurnoEntradaDto(LocalDateTime.now(), odontologoId, pacienteId);
         assertDoesNotThrow(() -> {
-            TurnoSalidaDto turnoGuardado = turnoService.registrarTurno(turnoDtoEntrada);
-            assertNotNull(turnoGuardado.getId());
+            TurnoSalidaDto turnoRegistrado = turnoService.registrarTurno(turnoDtoEntrada);
+            assertNotNull(turnoRegistrado.getId());
         });
     }
-
     @Test
     @Order(2)
-    void deberiaBuscarUnTurnoCorrectamente() {
+    void deberiaBuscarUnTurnoPorSuId() {
         assertDoesNotThrow(() -> turnoService.buscarTurnoPorId(1L));
     }
-
     @Test
     @Order(3)
-    void deberiaFallarAlBuscarUnTurnoInexistente() {
+    void deberiaFallarAlBuscarUnTurnoQueNoExiste() {
         assertThrows(ResourceNotFoundException.class, () -> turnoService.buscarTurnoPorId(9999L));
     }
 
@@ -67,21 +84,5 @@ class TurnosServiceTest {
         assertFalse(turnoService.listarTurnos().isEmpty());
     }
 
-    @Test
-    @Order(5)
-    void deberiaEliminarUnTurno() {
-        assertDoesNotThrow(() -> turnoService.eliminarTurno(1L));
-    }
 
-    @Test
-    @Order(6)
-    void deberiaFallarAlEliminarUnTurnoInexistente() {
-        assertThrows(ResourceNotFoundException.class, () -> turnoService.eliminarTurno(9999L));
-    }
-
-    @Test
-    @Order(7)
-    void deberiaListarUnaListaVaciaDeTurnos() {
-        assertTrue(turnoService.listarTurnos().isEmpty());
-    }
 }

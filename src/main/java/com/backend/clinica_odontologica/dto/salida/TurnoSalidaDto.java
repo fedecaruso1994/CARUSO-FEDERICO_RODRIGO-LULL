@@ -10,7 +10,7 @@ public class TurnoSalidaDto {
     private Long id;
     private LocalDateTime fechaYHora;
 
-    //Mostrar solo ID y Nom y ap de Od y Paciente
+
     private PacienteSalidaDto pacienteSalidaDto;
     private OdontologoSalidaDto odontologoSalidaDto;
 

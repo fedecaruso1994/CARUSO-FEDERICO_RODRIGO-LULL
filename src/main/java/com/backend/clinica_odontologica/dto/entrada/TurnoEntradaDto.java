@@ -15,19 +15,13 @@ public class TurnoEntradaDto {
     @FutureOrPresent(message = "La fecha y hora del turno debe ser en el futuro o en el presente")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaYHora;
+    private Long odontologoId;
+    private Long pacienteId;
 
-    @Valid
-    private PacienteEntradaDto pacienteEntradaDto;
-    @Valid
-    private OdontologoEntradaDto odontologoEntradaDto;
-
-    public TurnoEntradaDto() {
-    }
-
-    public TurnoEntradaDto(LocalDateTime fechaYHora, PacienteEntradaDto pacienteEntradaDto, OdontologoEntradaDto odontologoEntradaDto) {
+    public TurnoEntradaDto(LocalDateTime fechaYHora, Long odontologoId, Long pacienteId) {
         this.fechaYHora = fechaYHora;
-        this.pacienteEntradaDto = pacienteEntradaDto;
-        this.odontologoEntradaDto = odontologoEntradaDto;
+        this.odontologoId = odontologoId;
+        this.pacienteId = pacienteId;
     }
 
     public LocalDateTime getFechaYHora() {
@@ -38,19 +32,19 @@ public class TurnoEntradaDto {
         this.fechaYHora = fechaYHora;
     }
 
-    public PacienteEntradaDto getPacienteEntradaDto() {
-        return pacienteEntradaDto;
+    public Long getOdontologoId() {
+        return odontologoId;
     }
 
-    public void setPacienteEntradaDto(PacienteEntradaDto pacienteEntradaDto) {
-        this.pacienteEntradaDto = pacienteEntradaDto;
+    public void setOdontologoId(Long odontologoId) {
+        this.odontologoId = odontologoId;
     }
 
-    public OdontologoEntradaDto getOdontologoEntradaDto() {
-        return odontologoEntradaDto;
+    public Long getPacienteId() {
+        return pacienteId;
     }
 
-    public void setOdontologoEntradaDto(OdontologoEntradaDto odontologoEntradaDto) {
-        this.odontologoEntradaDto = odontologoEntradaDto;
+    public void setPacienteId(Long pacienteId) {
+        this.pacienteId = pacienteId;
     }
 }
