@@ -1,0 +1,1 @@
+Desde el Front logramos establecer una conexion con la api para los endpoints Registrar, Listar y Elminar de la entidad Odontologo. Para los endpoints de Paciente, aun nos hacen falta realizar modificaciones en el proyecto, para su correcto funcionamiento
