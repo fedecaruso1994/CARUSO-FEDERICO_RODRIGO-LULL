@@ -1,5 +1,6 @@
 package com.backend.clinica_odontologica.dto.entrada;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -7,6 +8,7 @@ import javax.validation.constraints.Size;
 public class OdontologoEntradaDto {
 
     @Positive(message = "La matricula no puede ser nulo o menor a cero")
+    @Digits(integer = 9, fraction = 0, message = "La matricula puede tener como maximo nueve digitos")
     private int matricula;
 
 

@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  background-image: url('../img/fondo.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: "Montserrat", sans-serif;
+}
+
+nav, .caja-index {
+  background-color: rgb(64, 117, 148);
+}
+
+/* Estilos index */
+
+.caja-index{
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+/* Estilos formularios */
+
+.caja-form, .form-control, .btn-form, .img-thumbnail{
+  border-radius: 15px;
+}
+
+.caja-form {
+  background-color: white;
+  width: 40%;
+}
+
+.caja-listado {
+  width: 60%;
+}
+
+.form-control{
+  background-color: rgb(222, 237, 247);
+}
+
+.btn-form {
+  background-color: rgb(64, 117, 148);
+  transition: all 0.5s;
+}
+
+/* Pseudoclases/interacciones formulario */
+
+.btn-form:hover{
+  background-color: rgb(38, 73, 94);
+  transform: scale(1.1);
+}
+
+.btn-form:active{
+  transform: scale(1.3);
+  background-color: rgb(64, 117, 148);
+}
+
+.dropdown-item:hover{
+  background-color: rgb(97, 143, 170);
+  color: white;
+}
